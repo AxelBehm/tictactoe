@@ -113,6 +113,8 @@ private enum GameVariant: String, CaseIterable, Identifiable {
 }
 
 struct ContentView: View {
+    private let privacyURL = URL(string: "https://axelbehm.github.io/kisoft4you/datenschutz.html")!
+
     @StateObject private var multiplayer = MultiplayerService()
     @State private var gameVariant: GameVariant = .classic
     @State private var gameMode: GameMode = .computer
@@ -207,6 +209,19 @@ struct ContentView: View {
                     endPoint: .bottom
                 )
                 .ignoresSafeArea()
+
+                Link(destination: privacyURL) {
+                    Image(systemName: "lock.shield.fill")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(.blue)
+                        .padding(9)
+                        .background(.thinMaterial, in: Circle())
+                }
+                .accessibilityLabel("Datenschutz")
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .padding(.leading, 16)
+                .padding(.top, proxy.safeAreaInsets.top + 8)
+                .zIndex(1)
 
                 VStack(spacing: 14) {
                     VStack(spacing: 6) {
