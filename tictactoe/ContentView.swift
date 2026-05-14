@@ -133,7 +133,23 @@ struct ContentView: View {
     }
 
     private var boardSpacing: CGFloat {
-        gameVariant == .classic ? 12 : 8
+        gameVariant == .classic ? 10 : 6
+    }
+
+    private var boardGridInset: CGFloat {
+        gameVariant == .classic ? 12 : 10
+    }
+
+    private var boardGridCornerRadius: CGFloat {
+        gameVariant == .classic ? 26 : 22
+    }
+
+    private var boardCellCornerRadius: CGFloat {
+        gameVariant == .classic ? 16 : 11
+    }
+
+    private var boardCellBorderWidth: CGFloat {
+        gameVariant == .classic ? 2.25 : 1.75
     }
 
     private var symbolSize: CGFloat {
@@ -277,12 +293,16 @@ struct ContentView: View {
                                 makeMove(at: index)
                             } label: {
                                 ZStack {
-                                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                        .fill(.thinMaterial)
+                                    RoundedRectangle(cornerRadius: boardCellCornerRadius, style: .continuous)
+                                        .fill(.regularMaterial)
                                         .overlay {
-                                            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                                .stroke(.secondary.opacity(0.25), lineWidth: 1)
+                                            RoundedRectangle(cornerRadius: boardCellCornerRadius, style: .continuous)
+                                                .strokeBorder(
+                                                    Color.primary.opacity(0.32),
+                                                    lineWidth: boardCellBorderWidth
+                                                )
                                         }
+                                        .shadow(color: .black.opacity(0.06), radius: 1, y: 1)
 
                                     if let player = board[index] {
                                         Image(systemName: player.systemImage)
@@ -296,6 +316,16 @@ struct ContentView: View {
                             .disabled(board[index] != nil || !canTapBoard || isGameOver)
                         }
                     }
+                    .padding(boardGridInset)
+                    .background {
+                        RoundedRectangle(cornerRadius: boardGridCornerRadius, style: .continuous)
+                            .fill(Color(.secondarySystemGroupedBackground))
+                    }
+                    .overlay {
+                        RoundedRectangle(cornerRadius: boardGridCornerRadius, style: .continuous)
+                            .stroke(Color.primary.opacity(0.22), lineWidth: 2)
+                    }
+                    .shadow(color: .black.opacity(0.12), radius: 10, y: 4)
                     .frame(width: boardSideLength(in: proxy), height: boardSideLength(in: proxy))
 
                     Spacer(minLength: 0)
